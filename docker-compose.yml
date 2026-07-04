@@ -1,8 +1,33 @@
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-healthcheck: &default-healthcheck
+  test: ["CMD-SHELL", "pgrep -f 'hermes --profile' || exit 1"]
+  interval: 60s
+  timeout: 10s
+  retries: 3
+
+x-dev-limits: &dev-limits
+  resources:
+    limits:
+      memory: 512M
+
+x-daily-limits: &daily-limits
+  resources:
+    limits:
+      memory: 256M
+
 services:
   dev-tpm:
     image: ghcr.io/nousresearch/hermes-agent:latest
     container_name: hermes-dev-tpm
     restart: unless-stopped
+    logging: *default-logging
+    healthcheck: *default-healthcheck
+    deploy: *dev-limits
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - GIT_AUTHOR_NAME=${GIT_AUTHOR_NAME}
@@ -15,16 +40,17 @@ services:
       - ./AGENT.md:/opt/data/AGENT.md:ro
       - ./OPINIONS.md:/opt/data/OPINIONS.md:ro
       - ./VOICE.md:/opt/data/VOICE.md:ro
-      - ${WORKSPACE_ROOT:-~/projects}:/opt/workspace
-      - ${SSH_KEY_PATH:-~/.ssh}:/root/.ssh:ro
+      - ${WORKSPACE_ROOT:-/Users/isfa/projects}:/opt/workspace
+      - ${SSH_KEY_PATH:-${HOME}/.ssh}:/root/.ssh:ro
     command: hermes --profile dev_tpm gateway start
-    stdin_open: true
-    tty: true
 
   dev-kotlin-mobile:
     image: ghcr.io/nousresearch/hermes-agent:latest
     container_name: hermes-dev-kotlin-mobile
     restart: unless-stopped
+    logging: *default-logging
+    healthcheck: *default-healthcheck
+    deploy: *dev-limits
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - GIT_AUTHOR_NAME=${GIT_AUTHOR_NAME}
@@ -37,16 +63,17 @@ services:
       - ./AGENT.md:/opt/data/AGENT.md:ro
       - ./OPINIONS.md:/opt/data/OPINIONS.md:ro
       - ./VOICE.md:/opt/data/VOICE.md:ro
-      - ${WORKSPACE_ROOT:-~/projects}:/opt/workspace
-      - ${SSH_KEY_PATH:-~/.ssh}:/root/.ssh:ro
+      - ${WORKSPACE_ROOT:-/Users/isfa/projects}:/opt/workspace
+      - ${SSH_KEY_PATH:-${HOME}/.ssh}:/root/.ssh:ro
     command: hermes --profile dev_kotlin_mobile gateway start
-    stdin_open: true
-    tty: true
 
   dev-golang-backend:
     image: ghcr.io/nousresearch/hermes-agent:latest
     container_name: hermes-dev-golang-backend
     restart: unless-stopped
+    logging: *default-logging
+    healthcheck: *default-healthcheck
+    deploy: *dev-limits
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - GIT_AUTHOR_NAME=${GIT_AUTHOR_NAME}
@@ -59,16 +86,17 @@ services:
       - ./AGENT.md:/opt/data/AGENT.md:ro
       - ./OPINIONS.md:/opt/data/OPINIONS.md:ro
       - ./VOICE.md:/opt/data/VOICE.md:ro
-      - ${WORKSPACE_ROOT:-~/projects}:/opt/workspace
-      - ${SSH_KEY_PATH:-~/.ssh}:/root/.ssh:ro
+      - ${WORKSPACE_ROOT:-/Users/isfa/projects}:/opt/workspace
+      - ${SSH_KEY_PATH:-${HOME}/.ssh}:/root/.ssh:ro
     command: hermes --profile dev_golang_backend gateway start
-    stdin_open: true
-    tty: true
 
   dev-frontend-react:
     image: ghcr.io/nousresearch/hermes-agent:latest
     container_name: hermes-dev-frontend-react
     restart: unless-stopped
+    logging: *default-logging
+    healthcheck: *default-healthcheck
+    deploy: *dev-limits
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - GIT_AUTHOR_NAME=${GIT_AUTHOR_NAME}
@@ -81,52 +109,38 @@ services:
       - ./AGENT.md:/opt/data/AGENT.md:ro
       - ./OPINIONS.md:/opt/data/OPINIONS.md:ro
       - ./VOICE.md:/opt/data/VOICE.md:ro
-      - ${WORKSPACE_ROOT:-~/projects}:/opt/workspace
-      - ${SSH_KEY_PATH:-~/.ssh}:/root/.ssh:ro
+      - ${WORKSPACE_ROOT:-/Users/isfa/projects}:/opt/workspace
+      - ${SSH_KEY_PATH:-${HOME}/.ssh}:/root/.ssh:ro
     command: hermes --profile dev_frontend_react gateway start
-    stdin_open: true
-    tty: true
 
   daily-general:
     image: ghcr.io/nousresearch/hermes-agent:latest
     container_name: hermes-daily-general
     restart: unless-stopped
-    environment:
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - GIT_AUTHOR_NAME=${GIT_AUTHOR_NAME}
-      - GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL}
-      - GIT_COMMITTER_NAME=${GIT_AUTHOR_NAME}
-      - GIT_COMMITTER_EMAIL=${GIT_AUTHOR_EMAIL}
+    logging: *default-logging
+    healthcheck: *default-healthcheck
+    deploy: *daily-limits
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
       - ./AGENT.md:/opt/data/AGENT.md:ro
       - ./OPINIONS.md:/opt/data/OPINIONS.md:ro
       - ./VOICE.md:/opt/data/VOICE.md:ro
-      - ${WORKSPACE_ROOT:-~/projects}:/opt/workspace
-      - ${SSH_KEY_PATH:-~/.ssh}:/root/.ssh:ro
+      - ${WORKSPACE_ROOT:-/Users/isfa/projects}:/opt/workspace:ro
     command: hermes --profile daily_general gateway start
-    stdin_open: true
-    tty: true
 
   daily-learning-buddy:
     image: ghcr.io/nousresearch/hermes-agent:latest
     container_name: hermes-daily-learning-buddy
     restart: unless-stopped
-    environment:
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - GIT_AUTHOR_NAME=${GIT_AUTHOR_NAME}
-      - GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL}
-      - GIT_COMMITTER_NAME=${GIT_AUTHOR_NAME}
-      - GIT_COMMITTER_EMAIL=${GIT_AUTHOR_EMAIL}
+    logging: *default-logging
+    healthcheck: *default-healthcheck
+    deploy: *daily-limits
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
       - ./AGENT.md:/opt/data/AGENT.md:ro
       - ./OPINIONS.md:/opt/data/OPINIONS.md:ro
       - ./VOICE.md:/opt/data/VOICE.md:ro
-      - ${WORKSPACE_ROOT:-~/projects}:/opt/workspace
-      - ${SSH_KEY_PATH:-~/.ssh}:/root/.ssh:ro
+      - ${WORKSPACE_ROOT:-/Users/isfa/projects}:/opt/workspace:ro
     command: hermes --profile daily_learning_buddy gateway start
-    stdin_open: true
-    tty: true

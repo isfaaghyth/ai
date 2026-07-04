@@ -46,22 +46,34 @@ PROFILES = {
 }
 
 PLACEHOLDER_CHECKS = [
-    "your_openrouter_api_key_here",
-    "your_anthropic_api_key_here",
-    "your_github_personal_access_token_here",
+    'your_openrouter_api_key_here',
+    'your_anthropic_api_key_here',
+    'your_github_personal_access_token_here',
+    'your_tpm_agent_bot_token_here',
+    'your_kotlin_agent_bot_token_here',
+    'your_golang_agent_bot_token_here',
+    'your_frontend_agent_bot_token_here',
+    'your_general_agent_bot_token_here',
+    'your_learning_buddy_bot_token_here',
+    'your_numeric_telegram_user_id_here',
+    'your_email@example.com',
 ]
 
 
 def parse_env(env_file: str) -> dict:
     config = {}
-    with open(env_file, "r") as f:
+    with open(env_file, 'r') as f:
         for line in f:
             line = line.strip()
-            if not line or line.startswith("#"):
+            if not line or line.startswith('#'):
                 continue
-            if "=" in line:
-                key, val = line.split("=", 1)
-                config[key.strip()] = val.strip()
+            if '=' in line:
+                key, val = line.split('=', 1)
+                val = val.strip()
+                # Strip surrounding single or double quotes
+                if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                    val = val[1:-1]
+                config[key.strip()] = val
     return config
 
 
@@ -129,6 +141,18 @@ def main():
 
     config = parse_env(env_file)
 
+    # Validate placeholder settings
+    placeholders_found = []
+    for key, val in config.items():
+        if val in PLACEHOLDER_CHECKS:
+            placeholders_found.append(key)
+    
+    if placeholders_found:
+        print("[!] WARNING: The following settings still have placeholder values:")
+        for key in placeholders_found:
+            print(f"    - {key} ({config[key]})")
+        print("[!] Please edit your `.env` file and supply real values before starting your bots.\n")
+
     profiles_data_dir = os.path.join(root_dir, "data", "profiles")
     templates_dir = os.path.join(root_dir, "templates")
 
@@ -175,6 +199,15 @@ def main():
                 f"    execution: {config.get(schema['model_execution'], '(fallback to default)')}"
             )
         print(f"    reasoning: {config.get(schema['reasoning_effort'], 'medium')}")
+
+    # 4. Bootstrap A2A communication directories
+    a2a_dir = os.path.join(root_dir, 'data', '.a2a')
+    for subdir in ['contracts', 'board']:
+        os.makedirs(os.path.join(a2a_dir, subdir), exist_ok=True)
+    for profile_name in PROFILES:
+        inbox = os.path.join(a2a_dir, 'inbox', profile_name, 'done')
+        os.makedirs(inbox, exist_ok=True)
+    print("[+] a2a mailbox initialized")
 
     print("\n[✓] All profiles generated. Start with: docker compose up -d")
 

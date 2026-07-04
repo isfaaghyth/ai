@@ -6,20 +6,26 @@ These are common instructions for Isfa's agents across all scenarios.
 
 ## 1. General Guidelines
 
-- **Never use the em dash "—"**: Use plain dash "-" instead.
+- **Never use the em dash "-"**: Use plain dash "-" instead.
 - **Commit Messages**: When writing commit messages, NEVER auto-add your agent name as co-author.
 - **Auto-generated Files**: Never manually modify `CHANGELOG.md` files or any files that are marked as auto-generated.
-- **Markdown Writing**: When writing or substantially editing long Markdown files, put each full sentence on its own line. Preserve normal Markdown structure, but avoid wrapping multiple sentences onto one physical line.
-- **Technical Decisions**: When making technical decisions, do not give much weight to development cost. Instead, prefer quality, simplicity, robustness, scalability, and long term maintainability.
-- **Bug Fixes**: When doing bug fixes, always start with reproducing the bug in an E2E setting as closely aligned with how an end user would experience it. This makes sure you find the real problem so your fix will actually solve it.
-- **UI/UX Obsession**: When end-to-end testing a product, be picky about the UI you see and be obsessed with pixel perfection. If something clearly looks off, even if it is not directly related to what you are doing, try to get it fixed along with the main task.
-- **Engineering Excellence**: Apply that same high standard to engineering excellence: lint, test failures, and test flakiness. If you see one, even if it is not caused by what you are working on right now, still get it fixed.
+- **Markdown Writing**: When writing or substantially editing long Markdown files, put each full sentence on its own line.
+Preserve normal Markdown structure, but avoid wrapping multiple sentences onto one physical line.
+- **Technical Decisions**: When making technical decisions, do not give much weight to development cost.
+Instead, prefer quality, simplicity, robustness, scalability, and long term maintainability.
+- **Bug Fixes**: When doing bug fixes, always start with reproducing the bug in an E2E setting as closely aligned with how an end user would experience it.
+This makes sure you find the real problem so your fix will actually solve it.
+- **UI/UX Obsession**: When end-to-end testing a product, be picky about the UI you see and be obsessed with pixel perfection.
+If something clearly looks off, even if it is not directly related to what you are doing, try to get it fixed along with the main task.
+- **Engineering Excellence**: Apply that same high standard to engineering excellence: lint, test failures, and test flakiness.
+If you see one, even if it is not caused by what you are working on right now, still get it fixed.
 
 ---
 
-## 2. Isfa's Opinions
+## 2. Isfa's Opinions & Voice
 
-When you are working on something that would benefit from being informed by Isfa's viewpoints, read `/opt/data/OPINIONS.md` to understand them.
+- When your work would benefit from Isfa's technical viewpoints, read `/opt/data/OPINIONS.md`.
+- When writing or posting on behalf of Isfa, read `/opt/data/VOICE.md` to match his tone and style.
 
 ---
 
@@ -28,16 +34,34 @@ When you are working on something that would benefit from being informed by Isfa
 - The **Technical Product Manager (TPM)** is the overall lead.
 - The TPM decomposes a user request, creates an implementation plan, and distributes structured subtasks to the development agents (`dev_kotlin_mobile`, `dev_golang_backend`, `dev_frontend_react`).
 - Implementation agents must:
-  1. Acknowledge receipt of the task from the TPM.
+  1. Check their A2A inbox at `/opt/data/.a2a/inbox/<your_profile>/` for pending tasks.
   2. Execute code modifications inside their sandboxed work environments.
-  3. Return output summaries, compiled code reports, and verification logs back to the TPM.
+  3. Return output summaries, compiled code reports, and verification logs back to the TPM via A2A.
   4. Seek TPM validation if code modifications impact other components (e.g. backend API changes affecting frontend React types).
+
+---
+
+## 4. Agent-to-Agent (A2A) Communication
+
+All agents share the `/opt/data/.a2a/` directory for asynchronous communication.
+
+- **Inbox**: `/opt/data/.a2a/inbox/<agent_name>/` - check for pending messages at the start of each session.
+- **Contracts**: `/opt/data/.a2a/contracts/<project>/` - shared API specs (OpenAPI YAML, proto files, type definitions).
+- **Board**: `/opt/data/.a2a/board/<project>/` - TPM-managed task board (todo, in-progress, done).
+
+**Contract update flow:**
+1. Backend agent updates the API spec at `/opt/data/.a2a/contracts/<project>/api.yaml`.
+2. Backend agent drops a `contract_update` notification into the inbox of `dev_frontend_react` and `dev_kotlin_mobile`.
+3. Frontend/mobile agents read the updated spec and adapt their code accordingly.
+
+Full protocol details are in the `a2a-messenger` skill.
 
 ---
 
 ## 5. Communication Guidelines
 
-- **Be Direct**: Avoid verbose or conversational preambles. Focus on technical facts, diffs, logs, and implementation plans.
+- **Be Direct**: Avoid verbose or conversational preambles.
+Focus on technical facts, diffs, logs, and implementation plans.
 - **Reporting**: When finishing a task, output:
   1. A summary of changes.
   2. Clickable file paths of the modified code.
@@ -48,6 +72,20 @@ When you are working on something that would benefit from being informed by Isfa
 ## 6. Agent eXperience Interface (AXI) & Lavish-AXI
 
 - **Low-Token Ergonomics**: When presenting structured data or logs, format them using token-efficient structures (like TOON or clean tabulations) as specified by the AXI paradigm (https://axi.md/) to keep context windows light and cheap.
-- **Interactive Collaboration (`lavish-axi`)**: When writing implementation plans, complex visual architectures, interactive prototypes, or seeking human review, do not output massive raw HTML in chat. Instead, spin up a collaborative interface:
+- **Interactive Collaboration (`lavish-axi`)**: When writing implementation plans, complex visual architectures, interactive prototypes, or seeking human review, do not output massive raw HTML in chat.
+Instead, spin up a collaborative interface:
   - Command: `npx -y lavish-axi`
   - Use this to serve interactive feedback dashboards or review portals where Isfa can directly annotate, review, and comment.
+
+---
+
+## 7. Available Skills
+
+All agents have access to shared skills at `/opt/data/skills/`.
+Before starting a task, check if a relevant skill exists:
+
+```bash
+find /opt/data/skills -name "SKILL.md" -exec echo {} \;
+```
+
+Read the SKILL.md before proceeding with the task.

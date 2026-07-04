@@ -12,7 +12,8 @@ def summarize_pdf(file_path: str):
         reader = pypdf.PdfReader(file_path)
         text = ""
         for page in reader.pages[:5]:
-            text += page.extract_text() + "\n"
+            extracted = page.extract_text()
+            text += (extracted or "") + "\n"
         print(text[:3000])
     except Exception as e:
         print(f"Error reading PDF: {e}")

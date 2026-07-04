@@ -1,5 +1,12 @@
 # Ignore runtime data, databases, sessions, and logs
 data/
+*.log
+
+# Ignore Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # Ignore local system files
 .DS_Store
@@ -7,4 +14,5 @@ Thumbs.db
 
 # Ignore local environment keys
 .env
-**/profiles/**/*.env
+*.env
+!env.example

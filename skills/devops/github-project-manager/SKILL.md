@@ -19,6 +19,19 @@ All projects are checked out into `/opt/workspace/`. Always work inside this dir
 
 ---
 
+## Resolving GitHub Username Dynamically
+
+Before executing git clone, create repo, or pull request operations, determine the current user's GitHub login name:
+
+```bash
+GITHUB_USER=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user | grep -o '"login": "[^"]*' | grep -o '[^"]*$')
+echo "Resolved GitHub user: $GITHUB_USER"
+```
+
+If the API query fails, ask Isfa or default to `isfahannaki`.
+
+---
+
 ## Workflow A: Pull an Existing Project
 
 When Isfa says "work on `<repo-name>`" or "clone `<url>`":
@@ -30,9 +43,8 @@ ls /opt/workspace/<repo-name>
 
 ### Step 2 - Clone if not present (prefer SSH)
 ```bash
-git clone git@github.com:isfahannaki/<repo-name>.git /opt/workspace/<repo-name>
+git clone git@github.com:$GITHUB_USER/<repo-name>.git /opt/workspace/<repo-name>
 ```
-Replace `isfahannaki` with the actual GitHub username or org.
 
 ### Step 3 - Read the project's AGENT.md if present
 ```bash
@@ -66,7 +78,7 @@ curl -s -X POST https://api.github.com/user/repos \
 mkdir -p /opt/workspace/<name>
 cd /opt/workspace/<name>
 git init
-git remote add origin git@github.com:isfahannaki/<name>.git
+git remote add origin git@github.com:$GITHUB_USER/<name>.git
 ```
 
 ### Step 3 - Create a default AGENT.md for this project
@@ -103,7 +115,7 @@ Conventional commit format: `type(scope): message`
 ## Workflow D: Open a Pull Request
 
 ```bash
-curl -s -X POST https://api.github.com/repos/isfahannaki/<repo-name>/pulls \
+curl -s -X POST https://api.github.com/user/repos \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
