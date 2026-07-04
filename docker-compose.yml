@@ -1,0 +1,55 @@
+services:
+  dev-kotlin-mobile:
+    image: ghcr.io/nousresearch/hermes-agent:latest
+    container_name: hermes-dev-kotlin-mobile
+    restart: unless-stopped
+    volumes:
+      - ./data:/opt/data
+      - ./skills:/opt/data/skills
+    command: hermes --profile dev_kotlin_mobile gateway start
+    stdin_open: true
+    tty: true
+
+  dev-golang-backend:
+    image: ghcr.io/nousresearch/hermes-agent:latest
+    container_name: hermes-dev-golang-backend
+    restart: unless-stopped
+    volumes:
+      - ./data:/opt/data
+      - ./skills:/opt/data/skills
+    command: hermes --profile dev_golang_backend gateway start
+    stdin_open: true
+    tty: true
+
+  dev-frontend-react:
+    image: ghcr.io/nousresearch/hermes-agent:latest
+    container_name: hermes-dev-frontend-react
+    restart: unless-stopped
+    volumes:
+      - ./data:/opt/data
+      - ./skills:/opt/data/skills
+    command: hermes --profile dev_frontend_react gateway start
+    stdin_open: true
+    tty: true
+
+  daily-general:
+    image: ghcr.io/nousresearch/hermes-agent:latest
+    container_name: hermes-daily-general
+    restart: unless-stopped
+    volumes:
+      - ./data:/opt/data
+      - ./skills:/opt/data/skills
+    command: hermes --profile daily_general gateway start
+    stdin_open: true
+    tty: true
+
+  daily-learning-buddy:
+    image: ghcr.io/nousresearch/hermes-agent:latest
+    container_name: hermes-daily-learning-buddy
+    restart: unless-stopped
+    volumes:
+      - ./data:/opt/data
+      - ./skills:/opt/data/skills
+    command: hermes --profile daily_learning_buddy gateway start
+    stdin_open: true
+    tty: true

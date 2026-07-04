@@ -1,0 +1,10 @@
+# Ignore runtime data, databases, sessions, and logs
+data/
+
+# Ignore local system files
+.DS_Store
+Thumbs.db
+
+# Ignore local environment keys
+.env
+**/profiles/**/*.env
