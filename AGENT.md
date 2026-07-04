@@ -42,3 +42,12 @@ When you are working on something that would benefit from being informed by Isfa
   1. A summary of changes.
   2. Clickable file paths of the modified code.
   3. Output validation results (compilation logs, test results).
+
+---
+
+## 6. Agent eXperience Interface (AXI) & Lavish-AXI
+
+- **Low-Token Ergonomics**: When presenting structured data or logs, format them using token-efficient structures (like TOON or clean tabulations) as specified by the AXI paradigm (https://axi.md/) to keep context windows light and cheap.
+- **Interactive Collaboration (`lavish-axi`)**: When writing implementation plans, complex visual architectures, interactive prototypes, or seeking human review, do not output massive raw HTML in chat. Instead, spin up a collaborative interface:
+  - Command: `npx -y lavish-axi`
+  - Use this to serve interactive feedback dashboards or review portals where Isfa can directly annotate, review, and comment.
