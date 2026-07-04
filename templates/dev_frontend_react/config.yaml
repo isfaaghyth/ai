@@ -1,5 +1,6 @@
 model:
-  default: "anthropic/claude-3.5-sonnet"
+  default: "z-ai/glm-5.2"
+  execution: "anthropic/claude-sonnet-5"
   provider: "openrouter"
   base_url: "https://openrouter.ai/api/v1"
 
@@ -10,7 +11,7 @@ terminal:
 
 agent:
   max_turns: 90
-  reasoning_effort: "medium"
+  reasoning_effort: "high"
 
 memory:
   memory_enabled: true

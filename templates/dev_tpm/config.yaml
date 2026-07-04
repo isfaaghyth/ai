@@ -1,6 +1,5 @@
 model:
   default: "anthropic/claude-opus-4.6"
-  execution: "anthropic/claude-sonnet-5"
   provider: "openrouter"
   base_url: "https://openrouter.ai/api/v1"
 

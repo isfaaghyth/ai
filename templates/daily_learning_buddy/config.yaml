@@ -1,5 +1,5 @@
 model:
-  default: "anthropic/claude-3.5-sonnet"
+  default: "google/gemini-3.5-flash"
   provider: "openrouter"
   base_url: "https://openrouter.ai/api/v1"
 
@@ -10,7 +10,7 @@ terminal:
 
 agent:
   max_turns: 90
-  reasoning_effort: "medium"
+  reasoning_effort: "high"
 
 memory:
   memory_enabled: true

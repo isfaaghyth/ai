@@ -1,4 +1,16 @@
 services:
+  dev-tpm:
+    image: ghcr.io/nousresearch/hermes-agent:latest
+    container_name: hermes-dev-tpm
+    restart: unless-stopped
+    volumes:
+      - ./data:/opt/data
+      - ./skills:/opt/data/skills
+      - ../AGENT.md:/opt/data/AGENT.md:ro
+    command: hermes --profile dev_tpm gateway start
+    stdin_open: true
+    tty: true
+
   dev-kotlin-mobile:
     image: ghcr.io/nousresearch/hermes-agent:latest
     container_name: hermes-dev-kotlin-mobile
@@ -6,6 +18,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
+      - ../AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile dev_kotlin_mobile gateway start
     stdin_open: true
     tty: true
@@ -17,6 +30,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
+      - ../AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile dev_golang_backend gateway start
     stdin_open: true
     tty: true
@@ -28,6 +42,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
+      - ../AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile dev_frontend_react gateway start
     stdin_open: true
     tty: true
@@ -39,6 +54,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
+      - ../AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile daily_general gateway start
     stdin_open: true
     tty: true
@@ -50,6 +66,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
+      - ../AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile daily_learning_buddy gateway start
     stdin_open: true
     tty: true

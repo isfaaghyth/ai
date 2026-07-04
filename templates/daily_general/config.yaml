@@ -1,5 +1,5 @@
 model:
-  default: "anthropic/claude-3.5-sonnet"
+  default: "google/gemini-3.5-flash"
   provider: "openrouter"
   base_url: "https://openrouter.ai/api/v1"
 

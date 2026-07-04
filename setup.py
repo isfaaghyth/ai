@@ -24,6 +24,7 @@ def main():
                 config[key.strip()] = val.strip()
 
     profiles = {
+        'dev_tpm': 'TELEGRAM_TOKEN_DEV_TPM',
         'dev_kotlin_mobile': 'TELEGRAM_TOKEN_DEV_KOTLIN_MOBILE',
         'dev_golang_backend': 'TELEGRAM_TOKEN_DEV_GOLANG_BACKEND',
         'dev_frontend_react': 'TELEGRAM_TOKEN_DEV_FRONTEND_REACT',
