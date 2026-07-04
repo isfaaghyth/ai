@@ -6,7 +6,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
-      - ../AGENT.md:/opt/data/AGENT.md:ro
+      - ./AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile dev_tpm gateway start
     stdin_open: true
     tty: true
@@ -18,7 +18,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
-      - ../AGENT.md:/opt/data/AGENT.md:ro
+      - ./AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile dev_kotlin_mobile gateway start
     stdin_open: true
     tty: true
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
-      - ../AGENT.md:/opt/data/AGENT.md:ro
+      - ./AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile dev_golang_backend gateway start
     stdin_open: true
     tty: true
@@ -42,7 +42,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
-      - ../AGENT.md:/opt/data/AGENT.md:ro
+      - ./AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile dev_frontend_react gateway start
     stdin_open: true
     tty: true
@@ -54,7 +54,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
-      - ../AGENT.md:/opt/data/AGENT.md:ro
+      - ./AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile daily_general gateway start
     stdin_open: true
     tty: true
@@ -66,7 +66,7 @@ services:
     volumes:
       - ./data:/opt/data
       - ./skills:/opt/data/skills
-      - ../AGENT.md:/opt/data/AGENT.md:ro
+      - ./AGENT.md:/opt/data/AGENT.md:ro
     command: hermes --profile daily_learning_buddy gateway start
     stdin_open: true
     tty: true
