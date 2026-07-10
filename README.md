@@ -1,3 +1,5 @@
+> ⚠️ **ANNOUNCEMENT:** This project has been migrated to [isfaaghyth/ghiath-ai](https://github.com/isfaaghyth/ghiath-ai). Future updates, releases, and maintenance will happen there.
+
 # isfa-ai: Multi-Agent Personal Workspace
 
 This repository houses a fleet of **NousResearch Hermes Agent** instances configured to run via **Docker Compose** and communicate through **Telegram**.
